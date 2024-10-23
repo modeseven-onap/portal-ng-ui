@@ -43,10 +43,9 @@ on:
 
 jobs:
   sonatype-cli:
-    name: Sonatype Lifecycle"
+    name: "Scan"
     runs-on: ubuntu-latest
     steps:
-
       - name: Setup Sonatype CLI
         uses: sonatype/actions/setup-iq-cli@v1
         with:

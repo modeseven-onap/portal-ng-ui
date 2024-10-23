@@ -1,11 +1,13 @@
 ---
-name: Gerrit Verify
+name: "Test without Gerrit"
 
 # yamllint disable-line rule:truthy
 on:
   workflow_dispatch:
 
+jobs:
   build-nodejs:
+    name: "Build Node.js Project"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,8 +17,11 @@ on:
         uses: lfit/releng-reusable-workflows/.github/actions/node-build-action@5db64208d04fdb0558e8a3a1a1a762b88ffd483e # Initial release
 
   sonartype-lifecycle:
+    name: "Sonatype Lifecycle"
     needs: [build-nodejs]
     # yamllint disable-line rule:line-length
-    uses: modeseven-onap/portal-ng-ui/.github/workflows/sonatype-lifecycle.yaml@master
+    uses: modeseven-onap/portal-ng-ui/.github/workflows/reuse-sonatype-lifecycle.yaml@master
+    with:
+      APPLICATION_ID: "onap-portal-ng-ui"
     secrets:
       NEXUS_IQ_PASSWORD: ${{ secrets.NEXUS_IQ_PASSWORD }}
