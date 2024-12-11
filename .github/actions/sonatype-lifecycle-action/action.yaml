@@ -35,24 +35,26 @@ inputs:
     description: "Nexus IQ Password"
     required: true
 
-steps:
-  - name: Setup Sonatype CLI
-    uses: sonatype/actions/setup-iq-cli@v1
-    with:
-      iq-cli-version: ${{ inputs.IQ_CLI_VERSION }}
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Sonatype CLI
+      uses: sonatype/actions/setup-iq-cli@v1
+      with:
+        iq-cli-version: ${{ inputs.IQ_CLI_VERSION }}
 
-  # Sonatype CLI requires Java to run
-  - name: Setup Java runtime
-    uses: actions/setup-java@v4
-    with:
-      distribution: ${{ inputs.JAVA_DISTRIBUTION }}
-      java-version: ${{ inputs.JAVA_VERSION }}
+    # Sonatype CLI requires Java to run
+    - name: Setup Java runtime
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ inputs.JAVA_DISTRIBUTION }}
+        java-version: ${{ inputs.JAVA_VERSION }}
 
-  - name: Run Sonatype CLI
-    uses: sonatype/actions/run-iq-cli@v1
-    with:
-      iq-server-url: ${{ vars.NEXUS_IQ_SERVER }}
-      username: ${{ vars.NEXUS_IQ_USERNAME }}
-      password: ${{ secrets.NEXUS_IQ_PASSWORD }}
-      application-id: ${{ inputs.APPLICATION_ID }}
-      scan-targets: ${{ inputs.SCAN_TARGETS }}
+    - name: Run Sonatype CLI
+      uses: sonatype/actions/run-iq-cli@v1
+      with:
+        iq-server-url: ${{ vars.NEXUS_IQ_SERVER }}
+        username: ${{ vars.NEXUS_IQ_USERNAME }}
+        password: ${{ secrets.NEXUS_IQ_PASSWORD }}
+        application-id: ${{ inputs.APPLICATION_ID }}
+        scan-targets: ${{ inputs.SCAN_TARGETS }}
